@@ -21,7 +21,7 @@ jobs:
     
     - name: Build the Docker image.
       working-directory: 03-app-dotnet
-      run: docker build .  --tag latest 
+      run: docker build .  -t harshinir/github_actions:latest 
       
     - name: Push the tagged Docker image
       run: docker push harshinir/github_actions:latest

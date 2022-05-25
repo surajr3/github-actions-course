@@ -2,7 +2,7 @@ name: 123-docker-build-workflow
 
 on:
   push:
-    branches: none # [ main ]
+    branches: main # [ main ]
   pull_request:
     branches: none # [ main ]
 

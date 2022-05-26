@@ -21,6 +21,8 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: Build the Docker image
+      working-directory: 03-app-dotnet
+
       run: docker build . --file Dockerfile --tag harshinir/github_actions:$(date +%s)
       
     - name: Docker Push

@@ -1,44 +1,27 @@
-name: dockerize the dotnet application
+name: Docker Image CI
 
 on:
   push:
-    branches: main # [ main ]
+    branches: [ master ]
   pull_request:
-    branches: none # [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches: [ master ]
 
 jobs:
 
-  build-container:
+  build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the code
-    - uses: actions/checkout@v3
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Login to Github Packages
-      uses: docker/login-action@v1
-      with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
-     
-     
-     
-     
-    - name: Build the Docker image.
-      working-directory: 03-app-dotnet
-      run: docker build .  -t harshinir/github_actions:latest 
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: harshinir
+        DOCKER_PASSWORD: Harshini@128
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag harshinir/github_actions:$(date +%s)
       
-    - name: Push the tagged Docker image
-      run: docker push harshinir/github_actions:latest
+    - name: Docker Push
+      run: docker push harshinir/github_actions:$(date +%s)
